@@ -5,6 +5,7 @@ using HarmonyLib;
 using ModHelper;
 using UnityEngine;
 using Nuterra.NativeOptions;
+using System;
 using System.IO;
 
 namespace WaterMod
@@ -45,7 +46,7 @@ namespace WaterMod
 
         public static void Main()
         {
-            d.Log("Initializing WaterMod!");
+            Console.WriteLine("Initializing WaterMod from TTMM!");
 
             if (!WaterMod.Inited)
             {
@@ -167,10 +168,10 @@ namespace WaterMod
     {
         [HarmonyPatch(typeof(TankBlock))]
         [HarmonyPatch("OnPool")]
-        private class PatchBlock
+        internal class PatchBlock
         {
             [HarmonyPostfix]
-            private static void Postfix(TankBlock __instance)
+            internal static void Postfix(TankBlock __instance)
             {
                 WaterBuoyancy.WaterBlock wEffect = __instance.gameObject.GetComponent<WaterBuoyancy.WaterBlock>();
                 if (wEffect == null)
@@ -193,10 +194,10 @@ namespace WaterMod
 
         [HarmonyPatch(typeof(TankBlock))]
         [HarmonyPatch("OnRecycle")]
-        private class TankBlockRecycle
+        internal class TankBlockRecycle
         {
             [HarmonyPostfix]
-            private static void Postfix(TankBlock __instance)
+            internal static void Postfix(TankBlock __instance)
             {
                 try
                 {
@@ -208,23 +209,31 @@ namespace WaterMod
 
         [HarmonyPatch(typeof(Tank))]
         [HarmonyPatch("OnPool")]
-        private class PatchTank
+        internal class PatchTank
         {
             [HarmonyPostfix]
-            private static void Postfix(Tank __instance)
+            internal static void Postfix(Tank __instance)
             {
-                var wEffect = __instance.gameObject.AddComponent<WaterBuoyancy.WaterTank>();
+                WaterBuoyancy.WaterTank wEffect = __instance.gameObject.GetComponent<WaterBuoyancy.WaterTank>();
+                if (wEffect == null)
+                {
+                    wEffect = __instance.gameObject.AddComponent<WaterBuoyancy.WaterTank>();
+                }
                 wEffect.Subscribe(__instance);
             }
         }
 
         [HarmonyPatch(typeof(Projectile), "OnPool")]
-        private class PatchProjectileSpawn
+        internal class PatchProjectileSpawn
         {
             [HarmonyPostfix]
-            private static void Postfix(Projectile __instance)
+            internal static void Postfix(Projectile __instance)
             {
-                var wEffect = __instance.gameObject.AddComponent<WaterBuoyancy.WaterObj>();
+                WaterBuoyancy.WaterObj wEffect = __instance.gameObject.GetComponent<WaterBuoyancy.WaterObj>();
+                if (wEffect == null)
+                {
+                    wEffect = __instance.gameObject.AddComponent<WaterBuoyancy.WaterObj>();
+                }
                 wEffect.effectBase = __instance;
 
                 if (__instance is MissileProjectile missile)
@@ -245,12 +254,16 @@ namespace WaterMod
 
         [HarmonyPatch(typeof(ResourcePickup))]
         [HarmonyPatch("OnPool")]
-        private class PatchResource
+        internal class PatchResource
         {
             [HarmonyPostfix]
-            private static void Postfix(ResourcePickup __instance)
+            internal static void Postfix(ResourcePickup __instance)
             {
-                var wEffect = __instance.gameObject.AddComponent<WaterBuoyancy.WaterObj>();
+                WaterBuoyancy.WaterObj wEffect = __instance.gameObject.GetComponent<WaterBuoyancy.WaterObj>();
+                if (wEffect == null)
+                {
+                    wEffect = __instance.gameObject.AddComponent<WaterBuoyancy.WaterObj>();
+                }
                 wEffect.effectBase = __instance;
                 wEffect.effectType = WaterBuoyancy.EffectTypes.ResourceChunk;
                 wEffect.GetRBody();

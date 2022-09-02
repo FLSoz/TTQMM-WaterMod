@@ -8,7 +8,7 @@ namespace WaterMod
         static UnityEngine.Networking.NetworkInstanceId Host;
         static bool HostExists = false;
 
-        const TTMsgType WaterChange = (TTMsgType)228;
+        const TTMsgType WaterChange = (TTMsgType)1228;
 
         private static float serverWaterHeight = -1000f;
 

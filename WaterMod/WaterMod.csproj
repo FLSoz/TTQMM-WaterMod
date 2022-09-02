@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="NetworkHandler.cs" />
     <Compile Include="OBJParser.cs" />
     <Compile Include="ReflectionHelper.cs" />
@@ -122,6 +123,10 @@
       <Project>{14ae920e-93c1-4faa-b51c-a21a167667b2}</Project>
       <Name>Nuterra.NativeOptions</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TechComponentInjector\TechComponentInjector\TechComponentInjector.csproj">
+      <Project>{50a84443-8e82-4060-b2ca-2aa653724548}</Project>
+      <Name>TechComponentInjector</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
