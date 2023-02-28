@@ -1,5 +1,7 @@
 ﻿using System;
 using HarmonyLib;
+using UnityEngine.Networking;
+using static Tank.CollisionInfo;
 
 namespace WaterMod
 {
@@ -7,8 +9,6 @@ namespace WaterMod
     {
         static UnityEngine.Networking.NetworkInstanceId Host;
         static bool HostExists = false;
-
-        const TTMsgType WaterChange = (TTMsgType)1228;
 
         private static float serverWaterHeight = -1000f;
 
@@ -44,20 +44,28 @@ namespace WaterMod
 
         public static void TryBroadcastNewHeight(float Water)
         {
-            if (HostExists) try
-                {
-                    Singleton.Manager<ManNetwork>.inst.SendToAllClients(WaterChange, new WaterChangeMessage(Water), Host);
-                    Console.WriteLine("Sent new water level to all");
-                }
-                catch { Console.WriteLine("Failed to send new water level..."); }
+            if (HostExists) try {
+                // WaterMod.networkingWrapper.BroadcastToAll(new WaterChangeMessage(Water));
+                WaterMod.networkingWrapper.SendMessageToServer(new WaterChangeMessage(Water));
+                // Singleton.Manager<ManNetwork>.inst.SendToAllClients(WaterChange, new WaterChangeMessage(Water), Host);
+                Console.WriteLine("Sent new water level to host: " + Water);
+            }
+            catch {
+                Console.WriteLine("Failed to send new water level... " + Water);
+            }
         }
 
-        public static void OnClientChangeWaterHeight(UnityEngine.Networking.NetworkMessage netMsg)
+        public static void OnHeightChanged(WaterChangeMessage obj, UnityEngine.Networking.NetworkMessage netMsg)
         {
-            var reader = new WaterChangeMessage();
-            netMsg.ReadMessage(reader);
-            serverWaterHeight = reader.Height;
-            Console.WriteLine("Received new water level, changing to " + serverWaterHeight.ToString());
+            serverWaterHeight = obj.Height;
+            Console.WriteLine("Received new water level from host, changing to " + serverWaterHeight.ToString());
+        }
+
+        public static void OnClientChangeWaterHeight(WaterChangeMessage obj, UnityEngine.Networking.NetworkMessage netMsg)
+        {
+            serverWaterHeight = obj.Height;
+            Console.WriteLine("Received new water level from client, changing to " + serverWaterHeight.ToString());
+            WaterMod.networkingWrapper.BroadcastMessageToAllExceptHost<WaterChangeMessage>(obj);
         }
 
         public static class Patches
@@ -87,7 +95,7 @@ namespace WaterMod
             {
                 static void Postfix(NetPlayer __instance)
                 {
-                    Singleton.Manager<ManNetwork>.inst.SubscribeToClientMessage(__instance.netId, WaterChange, new ManNetwork.MessageHandler(OnClientChangeWaterHeight));
+                    // Singleton.Manager<ManNetwork>.inst.SubscribeToClientMessage(__instance.netId, WaterChange, new ManNetwork.MessageHandler(OnClientChangeWaterHeight));
                     Console.WriteLine("Subscribed " + __instance.netId.ToString() + " to water level updates from host. Sending current level");
                     TryBroadcastNewHeight(serverWaterHeight);
                 }

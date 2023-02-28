@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterMod", "WaterMod\WaterMod.csproj", "{73B9BDE6-F65B-4B8F-9129-A5CD4136BBCF}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuterra.NativeOptions", "..\Nuterra.NativeOptions\Nuterra.NativeOptions\Nuterra.NativeOptions.csproj", "{14AE920E-93C1-4FAA-B51C-A21A167667B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechComponentInjector", "..\TechComponentInjector\TechComponentInjector\TechComponentInjector.csproj", "{50A84443-8E82-4060-B2CA-2AA653724548}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerraTechNetworkingWrapper", "..\TerraTechNetworkingWrapper\TerraTechNetworkingWrapper.csproj", "{48407D3C-D673-4FA4-8422-2E23377057B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{50A84443-8E82-4060-B2CA-2AA653724548}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50A84443-8E82-4060-B2CA-2AA653724548}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50A84443-8E82-4060-B2CA-2AA653724548}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48407D3C-D673-4FA4-8422-2E23377057B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48407D3C-D673-4FA4-8422-2E23377057B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48407D3C-D673-4FA4-8422-2E23377057B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48407D3C-D673-4FA4-8422-2E23377057B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

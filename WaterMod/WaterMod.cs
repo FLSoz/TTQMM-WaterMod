@@ -5,7 +5,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
+using TTCustomNetworkingWrapper;
 using UnityEngine;
+using static WaterMod.NetworkHandler;
 
 namespace WaterMod
 {
@@ -31,8 +33,19 @@ namespace WaterMod
             return new Type[] { typeof(TechComponentInjector.TechComponentInjector) };
         }
 
+        internal static CustomNetworkingWrapper<WaterChangeMessage> networkingWrapper;
+
         public void ManagedEarlyInit()
         {
+            // Networking
+            CustomNetworkingWrapper<WaterChangeMessage> wrapper = ManCustomNetHandler.GetNetworkingWrapper<WaterChangeMessage>(
+                "WaterMod",
+                NetworkHandler.OnHeightChanged,
+                NetworkHandler.OnClientChangeWaterHeight
+            );
+            ManCustomNetHandler.RegisterNetworkingWrapper(wrapper);
+            networkingWrapper = wrapper;
+
             if (!Inited)
             {
                 ConfigureLogger();

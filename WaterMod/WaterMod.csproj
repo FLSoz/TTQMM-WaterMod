@@ -128,6 +128,11 @@
       <Project>{50a84443-8e82-4060-b2ca-2aa653724548}</Project>
       <Name>TechComponentInjector</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TerraTechNetworkingWrapper\TerraTechNetworkingWrapper.csproj">
+      <Project>{48407d3c-d673-4fa4-8422-2e23377057b3}</Project>
+      <Name>TerraTechNetworkingWrapper</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
