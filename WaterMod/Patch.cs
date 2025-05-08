@@ -170,6 +170,9 @@ namespace WaterMod
         [HarmonyPatch("OnPool")]
         internal class PatchBlock
         {
+            internal static FieldInfo m_Force = AccessTools.Field(typeof(Thruster), "m_Force");
+            internal static FieldInfo m_BackForce = AccessTools.Field(typeof(FanJet), "backForce");
+
             [HarmonyPostfix]
             internal static void Postfix(TankBlock __instance)
             {
@@ -186,7 +189,7 @@ namespace WaterMod
                     {
                         wEffect.isFanJet = true;
                         wEffect.componentEffect = component;
-                        wEffect.initVelocity = new Vector3(component.force, component.backForce, 0f);
+                        wEffect.initVelocity = new Vector3((float) m_Force.GetValue(component), (float) m_BackForce.GetValue(component), 0f);
                     }
                 }
             }

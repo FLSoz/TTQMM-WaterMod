@@ -3,6 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using HarmonyLib;
 
 namespace WaterMod
 {
@@ -624,6 +625,8 @@ namespace WaterMod
                 }
             }
 
+            internal static FieldInfo m_Force = AccessTools.Field(typeof(Thruster), "m_Force");
+            internal static FieldInfo m_BackForce = AccessTools.Field(typeof(FanJet), "backForce");
             public void ApplyMultiplierFanJet()
             {
                 float num2 = (HeightCalc - componentEffect.transform.position.y + TankBlock.BlockCellBounds.extents.y) / TankBlock.BlockCellBounds.extents.y + 0.1f;
@@ -634,16 +637,16 @@ namespace WaterMod
                         num2 = 1f;
                     }
                     FanJet component = (componentEffect as FanJet);
-                    component.force = initVelocity.x * (num2 * FanJetMultiplier + 1);
-                    component.backForce = initVelocity.y * (num2 * FanJetMultiplier + 1);
+                    m_Force.SetValue(component, initVelocity.x * (num2 * FanJetMultiplier + 1));
+                    m_BackForce.SetValue(component, initVelocity.y * (num2 * FanJetMultiplier + 1));
                 }
             }
 
             public void ResetMultiplierFanJet()
             {
                 FanJet component = (componentEffect as FanJet);
-                component.force = initVelocity.x;
-                component.backForce = initVelocity.y;
+                m_Force.SetValue(component, initVelocity.x);
+                m_BackForce.SetValue(component, initVelocity.y);
             }
 
             public override void Stay(byte HeartBeat)
